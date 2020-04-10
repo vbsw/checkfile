@@ -122,7 +122,7 @@ func containsAllFromFile(file *os.File, termsBuffer *SearchTermsBuffer) (bool, e
 
 func searchAll(termsBuffer *SearchTermsBuffer, nRead int) int {
 	var nProcessed int
-	bufferLimit := nRead - termsBuffer.MinLength
+	bufferLimit := nRead - termsBuffer.MinLength + 1
 
 	for nProcessed = 0; nProcessed < bufferLimit && len(termsBuffer.Unmatched) > 0; nProcessed++ {
 		for j := 0; j < len(termsBuffer.Unmatched); j++ {
@@ -170,7 +170,7 @@ func containsAnyFromFile(file *os.File, termsBuffer *SearchTermsBuffer) (bool, e
 func searchAny(termsBuffer *SearchTermsBuffer, nRead int) (int, bool) {
 	var nProcessed int
 	var containsAny bool
-	bufferLimit := nRead - termsBuffer.MinLength
+	bufferLimit := nRead - termsBuffer.MinLength + 1
 
 	for nProcessed = 0; nProcessed < bufferLimit && !containsAny; nProcessed++ {
 		for _, term := range termsBuffer.Terms {
