@@ -3,7 +3,7 @@
 [![GoDoc](https://godoc.org/github.com/vbsw/checkfile?status.svg)](https://godoc.org/github.com/vbsw/checkfile) [![Go Report Card](https://goreportcard.com/badge/github.com/vbsw/checkfile)](https://goreportcard.com/report/github.com/vbsw/checkfile) [![Stability: Experimental](https://masterminds.github.io/stability/experimental.svg)](https://masterminds.github.io/stability/experimental.html)
 
 ## About
-This package provides functions to check a file on its status or its content. It is published on <https://github.com/vbsw/checkfile>.
+This package provides functions to check a file on its status or content. It is published on <https://github.com/vbsw/checkfile>.
 
 ## Copyright
 Copyright 2020, Vitali Baumtrok (vbsw@mailbox.org).
