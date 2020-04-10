@@ -101,21 +101,22 @@ func containsAllFromFile(file *os.File, termsBuffer *SearchTermsBuffer) (bool, e
 
 	nRead, err = file.Read(termsBuffer.Buffer)
 
-	if err == nil {
+	for err == nil {
 		nProcessed = searchAll(termsBuffer, nRead)
 		containsAll = len(termsBuffer.Unmatched) == 0
 
-		// read the rest of the file
-		for err == nil && !containsAll && nRead == len(termsBuffer.Buffer) {
+		if !containsAll && nRead == len(termsBuffer.Buffer) {
+			nUnread := len(termsBuffer.Buffer) - nProcessed
 			copy(termsBuffer.Buffer, termsBuffer.Buffer[nProcessed:])
-			nRead, err = file.Read(termsBuffer.Buffer[len(termsBuffer.Buffer)-nProcessed:])
-			nRead += nProcessed
-			nProcessed = searchAll(termsBuffer, nRead)
-			containsAll = len(termsBuffer.Unmatched) == 0
+			nRead, err = file.Read(termsBuffer.Buffer[nUnread:])
+			nRead += nUnread
+
+		} else {
+			break
 		}
-		if err == io.EOF {
-			err = nil
-		}
+	}
+	if err == io.EOF {
+		err = nil
 	}
 	return containsAll, err
 }
@@ -150,12 +151,13 @@ func containsAnyFromFile(file *os.File, termsBuffer *SearchTermsBuffer) (bool, e
 	nRead, err = file.Read(termsBuffer.Buffer)
 
 	for err == nil {
-		nRead += nProcessed
 		nProcessed, containsAny = searchAny(termsBuffer, nRead)
 
 		if !containsAny && nRead == len(termsBuffer.Buffer) {
+			nUnread := len(termsBuffer.Buffer) - nProcessed
 			copy(termsBuffer.Buffer, termsBuffer.Buffer[nProcessed:])
-			nRead, err = file.Read(termsBuffer.Buffer[len(termsBuffer.Buffer)-nProcessed:])
+			nRead, err = file.Read(termsBuffer.Buffer[nUnread:])
+			nRead += nUnread
 
 		} else {
 			break
