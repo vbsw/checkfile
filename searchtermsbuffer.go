@@ -7,7 +7,7 @@
 
 package checkfile
 
-// SerachTermsBuffer holds a buffer for the file and the search terms.
+// SearchTermsBuffer holds a buffer for the file and the search terms.
 type SearchTermsBuffer struct {
 	Buffer    []byte
 	Terms     [][]byte
@@ -35,15 +35,15 @@ func NewSearchTermsBufferFromBytes(bufferSize int, searchTerms [][]byte) *Search
 }
 
 // SetTerms sets the search terms and the minimum and maximum term length.
-// Emtpy search terms are removed.
+// Empty search terms are removed.
 func (termsBuffer *SearchTermsBuffer) SetTerms(searchTerms []string) {
 	termsBuffer.initTerms(searchTerms)
 	termsBuffer.initMinMax()
 	termsBuffer.initUnmatched()
 }
 
-// SetTerms sets the search terms and the minimum and maximum term length.
-// Emtpy search terms are not removed.
+// SetTermsFromBytes sets the search terms and the minimum and maximum term length.
+// Empty search terms are not removed.
 func (termsBuffer *SearchTermsBuffer) SetTermsFromBytes(searchTerms [][]byte) {
 	termsBuffer.Terms = searchTerms
 	termsBuffer.initMinMax()

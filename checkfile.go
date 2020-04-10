@@ -5,7 +5,7 @@
  *        http://www.boost.org/LICENSE_1_0.txt)
  */
 
-// Package checkfile provides functions to check a file on its status and content.
+// Package checkfile provides functions to check file status and content.
 package checkfile
 
 import (
