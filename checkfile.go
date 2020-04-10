@@ -48,7 +48,7 @@ func Size(path string) int64 {
 }
 
 // ContainsAll returns true, if the file exists and contains all of the search terms.
-func ContainsAll(path string, termsBuffer *SearchTermsBuffer) (bool, error) {
+func ContainsAll(path string, termsBuffer *TermsBuffer) (bool, error) {
 	var containsAll bool
 	fileInfo, err := os.Stat(path)
 
@@ -72,7 +72,7 @@ func ContainsAll(path string, termsBuffer *SearchTermsBuffer) (bool, error) {
 }
 
 // ContainsAny returns true, if the file exists and contains at least one of the search terms.
-func ContainsAny(path string, termsBuffer *SearchTermsBuffer) (bool, error) {
+func ContainsAny(path string, termsBuffer *TermsBuffer) (bool, error) {
 	var containsAny bool
 	fileInfo, err := os.Stat(path)
 
@@ -94,7 +94,7 @@ func ContainsAny(path string, termsBuffer *SearchTermsBuffer) (bool, error) {
 	return containsAny, err
 }
 
-func containsAllFromFile(file *os.File, termsBuffer *SearchTermsBuffer) (bool, error) {
+func containsAllFromFile(file *os.File, termsBuffer *TermsBuffer) (bool, error) {
 	var err error
 	var containsAll bool
 	var nRead, nProcessed int
@@ -121,7 +121,7 @@ func containsAllFromFile(file *os.File, termsBuffer *SearchTermsBuffer) (bool, e
 	return containsAll, err
 }
 
-func searchAll(termsBuffer *SearchTermsBuffer, nRead int) int {
+func searchAll(termsBuffer *TermsBuffer, nRead int) int {
 	var nProcessed int
 	bufferLimit := nRead - termsBuffer.MinLength + 1
 
@@ -143,7 +143,7 @@ func searchAll(termsBuffer *SearchTermsBuffer, nRead int) int {
 	return nProcessed
 }
 
-func containsAnyFromFile(file *os.File, termsBuffer *SearchTermsBuffer) (bool, error) {
+func containsAnyFromFile(file *os.File, termsBuffer *TermsBuffer) (bool, error) {
 	var err error
 	var containsAny bool
 	var nRead, nProcessed int
@@ -169,7 +169,7 @@ func containsAnyFromFile(file *os.File, termsBuffer *SearchTermsBuffer) (bool, e
 	return containsAny, err
 }
 
-func searchAny(termsBuffer *SearchTermsBuffer, nRead int) (int, bool) {
+func searchAny(termsBuffer *TermsBuffer, nRead int) (int, bool) {
 	var nProcessed int
 	var containsAny bool
 	bufferLimit := nRead - termsBuffer.MinLength + 1

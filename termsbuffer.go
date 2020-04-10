@@ -7,8 +7,8 @@
 
 package checkfile
 
-// SearchTermsBuffer holds a buffer for the file and the search terms.
-type SearchTermsBuffer struct {
+// TermsBuffer holds a buffer for the file and the search terms.
+type TermsBuffer struct {
 	Buffer    []byte
 	Terms     [][]byte
 	MinLength int
@@ -16,17 +16,17 @@ type SearchTermsBuffer struct {
 	Unmatched []int
 }
 
-// NewSearchTermsBuffer creates a new instance of SearchTermsBuffer.
-func NewSearchTermsBuffer(bufferSize int, searchTerms []string) *SearchTermsBuffer {
-	termsBuffer := new(SearchTermsBuffer)
+// NewTermsBuffer creates a new instance of TermsBuffer.
+func NewTermsBuffer(bufferSize int, searchTerms []string) *TermsBuffer {
+	termsBuffer := new(TermsBuffer)
 	termsBuffer.SetTerms(searchTerms)
 	termsBuffer.initBuffer(bufferSize)
 	return termsBuffer
 }
 
-// NewSearchTermsBufferFromBytes creates a new instance of SearchTermsBuffer.
-func NewSearchTermsBufferFromBytes(bufferSize int, searchTerms [][]byte) *SearchTermsBuffer {
-	termsBuffer := new(SearchTermsBuffer)
+// NewTermsBufferFromBytes creates a new instance of TermsBuffer.
+func NewTermsBufferFromBytes(bufferSize int, searchTerms [][]byte) *TermsBuffer {
+	termsBuffer := new(TermsBuffer)
 	termsBuffer.Terms = searchTerms
 	termsBuffer.initMinMax()
 	termsBuffer.initUnmatched()
@@ -36,7 +36,7 @@ func NewSearchTermsBufferFromBytes(bufferSize int, searchTerms [][]byte) *Search
 
 // SetTerms sets the search terms and the minimum and maximum term length.
 // Empty search terms are removed.
-func (termsBuffer *SearchTermsBuffer) SetTerms(searchTerms []string) {
+func (termsBuffer *TermsBuffer) SetTerms(searchTerms []string) {
 	termsBuffer.initTerms(searchTerms)
 	termsBuffer.initMinMax()
 	termsBuffer.initUnmatched()
@@ -44,13 +44,13 @@ func (termsBuffer *SearchTermsBuffer) SetTerms(searchTerms []string) {
 
 // SetTermsFromBytes sets the search terms and the minimum and maximum term length.
 // Empty search terms are not removed.
-func (termsBuffer *SearchTermsBuffer) SetTermsFromBytes(searchTerms [][]byte) {
+func (termsBuffer *TermsBuffer) SetTermsFromBytes(searchTerms [][]byte) {
 	termsBuffer.Terms = searchTerms
 	termsBuffer.initMinMax()
 	termsBuffer.initUnmatched()
 }
 
-func (termsBuffer *SearchTermsBuffer) initTerms(searchTerms []string) {
+func (termsBuffer *TermsBuffer) initTerms(searchTerms []string) {
 	bytes := make([][]byte, 0, len(searchTerms))
 	for _, term := range searchTerms {
 		if len(term) > 0 {
@@ -60,7 +60,7 @@ func (termsBuffer *SearchTermsBuffer) initTerms(searchTerms []string) {
 	termsBuffer.Terms = bytes
 }
 
-func (termsBuffer *SearchTermsBuffer) initMinMax() {
+func (termsBuffer *TermsBuffer) initMinMax() {
 	termsBuffer.MinLength = int(^uint(0) >> 1)
 	termsBuffer.MaxLength = 0
 
@@ -79,7 +79,7 @@ func (termsBuffer *SearchTermsBuffer) initMinMax() {
 	}
 }
 
-func (termsBuffer *SearchTermsBuffer) initUnmatched() {
+func (termsBuffer *TermsBuffer) initUnmatched() {
 	minLength := len(termsBuffer.Terms)
 
 	if cap(termsBuffer.Unmatched) < minLength {
@@ -93,12 +93,12 @@ func (termsBuffer *SearchTermsBuffer) initUnmatched() {
 	}
 }
 
-func (termsBuffer *SearchTermsBuffer) initBuffer(bufferSize int) {
+func (termsBuffer *TermsBuffer) initBuffer(bufferSize int) {
 	size := max(bufferSize, termsBuffer.minBufferSize())
 	termsBuffer.Buffer = make([]byte, size)
 }
 
-func (termsBuffer *SearchTermsBuffer) minBufferSize() int {
+func (termsBuffer *TermsBuffer) minBufferSize() int {
 	return int(float64(termsBuffer.MaxLength) * 1.2)
 }
 
