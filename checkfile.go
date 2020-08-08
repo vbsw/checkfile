@@ -14,7 +14,7 @@ import (
 	"os"
 )
 
-// Exists returns true, if the file exists.
+// Exists returns true, if the file exists. It doesn't matter if it's a directory or a file.
 func Exists(path string) bool {
 	_, err := os.Stat(path)
 	exists := err == nil || !os.IsNotExist(err)
